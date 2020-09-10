@@ -1,17 +1,20 @@
 <?php 
-    session_start();
     include "config.php";
-?>
+    ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD App</title>
-    <!-- Create, Read, Update, Delete -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CRUD App</title>
+        <!-- Create, Read, Update, Delete -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </head>
 <body>
+    <?php require_once 'action.php'; ?>
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
         <!-- Brand -->
         <a class="navbar-brand" href="#">CRUD App</a>
@@ -47,9 +50,9 @@
                 <h3 class="tect-center text-dark mt-2">Advanced CRUD App Using PHP & MYSQLi Prepared Statement (Object Oriented)</h3>
                 <hr>
                 <?php if(isset($_SESSION['response'])){ ?>
-                <div class="alert alert-<?= $_SESSION['res_type']; ?> alert-dismissible text-center">
+                <div class="alert alert-<?php echo $_SESSION['res_type']; ?> alert-dismissible text-center">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <b class="text-center"><?= $_SESSION['response']; ?></b>
+                    <b class="text-center"><?php echo $_SESSION['response']; ?></b>
                 </div>
                 <?php } unset($_SESSION['response']); ?>
             </div>
@@ -95,28 +98,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while($row = $result->fetch_assoc()){ ?>
+                        <?php while($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?= $row['id']; ?></td>
-                            <td><img src="<?= $row['photo']; ?>" width="25"></td>
-                            <td><?= $row['name']; ?></td>
-                            <td><?= $row['email']; ?></td>
-                            <td><?= $row['phone']; ?></td>
+                            <td><?php echo $row['id']; ?></td>
+                            <td><img src="<?php echo $row['photo']; ?>" width="25"></td>
+                            <td><?php echo $row['name']; ?></td>
+                            <td><?php echo $row['email']; ?></td>
+                            <td><?php echo $row['phone']; ?></td>
                             <td>
-                                <a href="details.php?details=<?= $row['id']; ?>" class="badge badge-primary p-2 mb-1">Details</a> |
-                                <a href="action.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2 mb-1">Delete</a> |
-                                <a href="index.php?edit=<?= $row['id']; ?>" class="badge badge-success p-2 mb-1">Edit</a> |
+                                <a href="details.php?details=<?php echo $row['id']; ?>" class="badge badge-primary p-2 mb-1">Details</a> |
+                                <a href="action.php?delete=<?php echo $row['id']; ?>" class="badge badge-danger p-2 mb-1" onclick="return confirm('Do you want to delete this recording?')">Delete</a> |
+                                <a href="index.php?edit=<?php echo $row['id']; ?>" class="badge badge-success p-2 mb-1">Edit</a> |
                             </td>
                         </tr>
-                        <?php } ?>  
+                        <?php endwhile; ?>  
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    
 </body>
 </html>
