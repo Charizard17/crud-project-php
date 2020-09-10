@@ -1,7 +1,13 @@
 <?php
+    session_start();
     include 'config.php';
 
-    session_start();
+    $update = false;
+    $id = "";
+    $name = "";
+    $email = "";
+    $phone = "";
+    $photo = "";
     
     if (isset($_POST['add'])) {
         $name = $_POST['name'];
@@ -17,9 +23,9 @@
         $stmt->execute();
         move_uploaded_file($_FILES['image']['tmp_name'], $upload);
         
-        header('location:index.php');
         $_SESSION['response'] = "Succesfully inserted to the database!";
         $_SESSION['res_type'] = "success";
+        header('location:index.php');
     }
 
     if(isset($_GET['delete'])){
@@ -40,7 +46,52 @@
         $stmt->bind_param("i", $id);
         $stmt->execute();
 
-        header('location:index.php');
         $_SESSION['response'] = "Succesfully Deleted!";
         $_SESSION['res_type'] = "danger";
+        header('location:index.php');
     }
+
+    if (isset($_GET['edit'])) {
+        $id = $_GET['edit'];
+
+        $query = "SELECT * FROM crud WHERE id=?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        $id = $row['id'];
+        $name = $row['name'];
+        $email = $row['email'];
+        $phone = $row['phone'];
+        $photo = $row['photo'];
+
+        $update = true;
+    }
+
+    if (isset($_POST['update'])) {
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        $photo = $_POST['oldimage'];
+
+        if (isset($_FILES['image']['name']) && ($_FILES['image']['name'] != "")) {
+            $newimage = "uploads/".$_FILES['image']['name'];
+            unlink($oldimage);
+            move_uploaded_file($_FILES['image']['tmp_name'], $newimage);
+        } else {
+            $newimage = $oldimage;
+        }
+
+        $query = "UPDATE crud SET name=?, email=?, phone=?, photo=? WHERE id=?";
+        $stmt=$conn->prepare($query);
+        $stmt->bind_param("ssssi", $name, $email, $phone, $newimage, $id);
+        $stmt->execute();
+
+        $_SESSION['response'] = "Updated Succesfully!";
+        $_SESSION['res_type'] = "primary";
+        header('location:index.php');
+    }
+

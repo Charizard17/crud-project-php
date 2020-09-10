@@ -17,7 +17,7 @@
     <?php require_once 'action.php'; ?>
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
         <!-- Brand -->
-        <a class="navbar-brand" href="#">CRUD App</a>
+        <a class="navbar-brand" href="/phpcrud/index.php">CRUD App</a>
 
         <!-- Toggler/collapsibe Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -61,20 +61,27 @@
             <div class="col-md-4">
                 <h3 class="text-center text-info">App Record</h3>
                 <form action="action.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <div class="form-group">
-                    <input type="text" name="name" class="form-control" placeholder="Enter name" required>
+                    <input type="text" name="name" value="<?php echo $name; ?>" class="form-control" placeholder="Enter name" required>
                 </div>
                 <div class="form-group">
-                    <input type="email" name="email" class="form-control" placeholder="Enter e-mail" required>
+                    <input type="email" name="email" value="<?php echo $email; ?>" class="form-control" placeholder="Enter e-mail" required>
                 </div>
                 <div class="form-group">
-                    <input type="tel" name="phone" class="form-control" placeholder="Enter phone" required>
+                    <input type="tel" name="phone" value="<?php echo $phone; ?>" class="form-control" placeholder="Enter phone" required>
                 </div>
                 <div class="form-group">
+                    <input type="hidden" name="oldimage" value="<?php echo $photo; ?>">
                     <input type="file" name="image" class="custom-file">
+                    <img src="<?php echo $photo; ?>" width="120" class="img-thumbnail">
                 </div>
                 <div class="form-group">
-                    <input type="submit" name="add" class="btn btn-primary btn-block" value="Add Record">
+                    <?php if($update==true){ ?>
+                        <input type="submit" name="update" class="btn btn-success btn-block" value="Update Record">
+                    <?php } else { ?>
+                        <input type="submit" name="add" class="btn btn-primary btn-block" value="Add Record">
+                    <?php } ?>
                 </div>
                 </form>
             </div>
